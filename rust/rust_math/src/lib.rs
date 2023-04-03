@@ -7,7 +7,8 @@ use jni::JNIEnv;
 #[no_mangle]
 #[allow(non_snake_case)]
 pub extern fn Java_number_MathUtils_isPrime(_env: JNIEnv, _class: JClass, java_num: jlong) -> jboolean {
-    let number = java_num as i64;
+    let number = java_num as u64;
+    let stop = (number as f64).sqrt() as u64;
 
     if number <= 1 {
         return jboolean::from(false);
@@ -17,7 +18,8 @@ pub extern fn Java_number_MathUtils_isPrime(_env: JNIEnv, _class: JClass, java_n
     }
 
     let mut counter = 5;
-    while counter * counter <= number {
+
+    while counter <= stop {
         if (number % counter == 0) || (number % (counter + 2) == 0) {
             return jboolean::from(false);
         }
